@@ -22,6 +22,7 @@ consumer = Consumer({
 consumer.subscribe(['restaurant.updates'])
 
 @app.get("/", response_class=HTMLResponse)
+@app.get("/map", response_class=HTMLResponse)
 async def read_root():
     with open("static/index.html", "r") as f:
         return f.read()
