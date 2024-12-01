@@ -81,7 +81,13 @@ services:
         condition: service_completed_successfully
       kafka:
         condition: service_healthy
-
+  frontend:
+    build: frontend/.
+    ports:
+      - "8000:8000"
+    depends_on:
+      kafka:
+        condition: service_healthy
   # mysql:
   #   image: mysql:8.0
   #   environment:
