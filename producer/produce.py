@@ -9,7 +9,7 @@ from confluent_kafka import Producer
 
 random.seed(0)
 
-producer = Producer({"bootstrap.servers": "broker:9092"})
+producer = Producer({"bootstrap.servers": "broker:29092"})
 
 max_latitude = 19.475625
 max_longitude = -99.189273
@@ -35,7 +35,7 @@ actions = ["order_received", "order_completed"]
 
 while True:
     action = random.choice(actions)
-    restaurant = random.choice(restaurants).copy()
+    restaurant = random.choice(restaurants)
     action_time = datetime.now().strftime("%Y-%m-%d %H:%M:%S.%f")
 
     message = {
@@ -48,5 +48,8 @@ while True:
         order_completion_time = random.uniform(10.0, 30.0)
         message["order_completion_time"] = order_completion_time
 
-    # print(f"Producing {json.dumps(message)}")
+    producer.produce("restaurant.updates", json.dumps(message))
+    producer.poll(0)
+
+    print(f"Produced {json.dumps(message)}")
     time.sleep(random.randint(0, 3))
