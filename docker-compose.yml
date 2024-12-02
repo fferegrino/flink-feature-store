@@ -91,13 +91,13 @@ services:
     depends_on:
       setup:
         condition: service_completed_successfully
-  # mysql:
-  #   image: mysql:8.0
-  #   environment:
-  #     MYSQL_ROOT_PASSWORD: root
-  #   volumes:
-  #     - mysql_data:/var/lib/mysql
-  #   ports:
+  ingestor:
+    build: ingestor/.
+    env_file:
+      - compose.env
+    depends_on:
+      setup:
+        condition: service_completed_successfully
   mysql:
     image: mysql:8.0
     env_file:
