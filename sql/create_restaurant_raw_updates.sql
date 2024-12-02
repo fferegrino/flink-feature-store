@@ -1,4 +1,4 @@
-CREATE TABLE restaurant_updates (
+CREATE TABLE restaurant_raw_updates (
   `restaurant_id` INT NOT NULL,
   `latitude` DOUBLE NOT NULL,
   `longitude` DOUBLE NOT NULL,
