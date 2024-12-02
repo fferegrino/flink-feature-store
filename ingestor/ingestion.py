@@ -1,6 +1,7 @@
 from confluent_kafka import Consumer
 import json
 import mysql.connector
+import redis
 import os
 
 consumer = Consumer({
@@ -21,6 +22,7 @@ db_config = {
     "database": os.environ.get("MYSQL_DATABASE"),
 }
 
+redis_client = redis.Redis(host='redis', port=6379)
 
 while True:
     message = consumer.poll(1.0)
@@ -56,3 +58,5 @@ while True:
         if connection is not None and connection.is_connected():
             cursor.close()
             connection.close()
+
+    redis_client.hset(f"restaurant_order_counts_{decoded_value['restaurant_id']}", mapping=decoded_value)
