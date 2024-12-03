@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kafka Stream Map Viewer</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+    <style>
+        body, html, #map { 
+            height: 100%; 
+            width: 100%; 
+            margin: 0; 
+            padding: 0; 
+        }
+    </style>
+</head>
+<body>
+    <table id="map">
+    </table>
+
+    <script>
+        const ws = new WebSocket('ws://' + window.location.host + '/aggregates');
+
+        ws.onmessage = function(event) {
+            const message = JSON.parse(event.data);
+        };
+
+        ws.onclose = function(event) {
+            console.log('WebSocket connection closed:', event);
+        };
+
+        ws.onerror = function(error) {
+            console.error('WebSocket error:', error);
+        };
+    </script>
+</body>
+</html>

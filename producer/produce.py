@@ -48,7 +48,7 @@ while True:
         order_completion_time = random.uniform(10.0, 30.0)
         message["order_completion_time"] = order_completion_time
 
-    producer.produce("restaurant.updates", json.dumps(message))
+    producer.produce("restaurant.raw.updates", json.dumps(message))
     producer.poll(0)
 
     print(f"Produced {json.dumps(message)}")
