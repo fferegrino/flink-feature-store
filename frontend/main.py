@@ -37,29 +37,29 @@ async def map():
     with open("static/map.html", "r") as f:
         return f.read()
 
-# @app.websocket("/aggregates")
-# async def aggregates_endpoint(websocket: WebSocket):
-#     await websocket.accept()
-#     try:
-#         while True:
-#             # Non-blocking check for messages from Kafka
-#             message = aggregates_consumer.poll(1.0)
-#             if message is None:
-#                 continue
-#             if message.error():
-#                 print(f"Kafka error: {message.error()}")
-#                 continue
+@app.websocket("/aggregates")
+async def aggregates_endpoint(websocket: WebSocket):
+    await websocket.accept()
+    try:
+        while True:
+            # Non-blocking check for messages from Kafka
+            message = aggregates_consumer.poll(1.0)
+            if message is None:
+                continue
+            if message.error():
+                print(f"Kafka error: {message.error()}")
+                continue
             
-#             value = message.value().decode('utf-8')
-#             if value:
-#                 await websocket.send_text(value)
+            value = message.value().decode('utf-8')
+            if value:
+                await websocket.send_text(value)
             
-#             # Small delay to prevent CPU overuse
-#             await asyncio.sleep(0.1)
-#     except Exception as e:
-#         print(f"Error: {e}")
-#     finally:
-#         await websocket.close()
+            # Small delay to prevent CPU overuse
+            await asyncio.sleep(0.1)
+    except Exception as e:
+        print(f"Error: {e}")
+    finally:
+        await websocket.close()
 
 @app.websocket("/raw")
 async def raw_endpoint(websocket: WebSocket):
