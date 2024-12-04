@@ -9,5 +9,7 @@ RUN pip install mysql-connector-python pandas
 # Switch back to notebook user
 USER ${NB_UID}
 
+COPY example.ipynb /home/jovyan/
+
 # Disable token authentication
 CMD ["jupyter", "lab", "--ip=0.0.0.0", "--port=8888", "--no-browser", "--NotebookApp.token=''", "--NotebookApp.password=''"]
