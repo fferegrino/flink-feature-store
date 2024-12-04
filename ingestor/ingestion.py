@@ -24,6 +24,10 @@ db_config = {
 
 redis_client = redis.Redis(host='redis', port=6379)
 
+print("Starting ingestion")
+
+message_count = 0
+
 while True:
     message = consumer.poll(1.0)
     if message is None:
@@ -34,6 +38,11 @@ while True:
     
     value = message.value().decode('utf-8')
     decoded_value = json.loads(value)
+
+    message_count += 1
+    if message_count % 100 == 0:
+        print(f"Processed {message_count} messages")
+        message_count = 0
 
     try:
         connection = mysql.connector.connect(
@@ -59,4 +68,4 @@ while True:
             cursor.close()
             connection.close()
 
-    redis_client.hset(f"restaurant_order_counts_{decoded_value['restaurant_id']}", mapping=decoded_value)
+    redis_client.hset(f"restaurant:{decoded_value['restaurant_id']}:latest_count", mapping=decoded_value)
