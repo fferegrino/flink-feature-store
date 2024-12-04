@@ -8,7 +8,7 @@ CREATE TABLE restaurant_raw_updates (
   WATERMARK FOR `timestamp` AS `timestamp` - INTERVAL '5' SECOND
 ) WITH (
   'connector' = 'kafka',
-  'topic' = 'restaurant.updates',
+  'topic' = 'restaurant.raw.updates',
   'properties.group.id' = 'consumer-group-1',
   'scan.startup.mode' = 'earliest-offset',
   'properties.bootstrap.servers' = 'broker:29092',

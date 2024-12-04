@@ -113,6 +113,18 @@ services:
     ports:
       - 6379:6379
       - 8001:8001
+  # Flink setup
+  # Uncomment to run flink setup automatically
+  flink-setup:
+    build: flink-setup/.
+    depends_on:
+      - jobmanager
+      - kafka
+    environment:
+      - |
+        FLINK_PROPERTIES=
+        jobmanager.rpc.address: jobmanager
+        rest.address: jobmanager
 volumes:
   flink_data:
   mysql_data:
