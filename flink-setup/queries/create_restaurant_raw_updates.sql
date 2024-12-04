@@ -1,4 +1,4 @@
-CREATE TABLE restaurant_raw_updates (
+CREATE TABLE IF NOT EXISTS restaurant_raw_updates (
   `restaurant_id` INT NOT NULL,
   `latitude` DOUBLE NOT NULL,
   `longitude` DOUBLE NOT NULL,

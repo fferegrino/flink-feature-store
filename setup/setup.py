@@ -20,11 +20,13 @@ existing_topics = set(kafka_admin.list_topics().topics)
 for topic in topics:
     new_topic = NewTopic(topic, num_partitions=1, replication_factor=1)
 
-    if topic not in existing_topics:
-        kafka_admin.create_topics([new_topic])
-        print(f"Topic {topic} created successfully.")
-    else:
-        print(f"Topic {topic} already exists.")
+    if topic in existing_topics:
+        print(f"Deleting topic {topic}")
+        kafka_admin.delete_topics([topic])
+        time.sleep(3)
+
+    kafka_admin.create_topics([new_topic])
+    print(f"Topic {topic} created successfully.")
 
 # Setup database
 connection = None

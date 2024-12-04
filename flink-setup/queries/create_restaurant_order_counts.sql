@@ -1,4 +1,4 @@
-CREATE TABLE restaurant_order_counts (
+CREATE TABLE IF NOT EXISTS restaurant_order_counts (
     restaurant_id INT,
     window_start TIMESTAMP(3),
     window_end TIMESTAMP(3),
