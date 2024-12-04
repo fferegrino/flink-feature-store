@@ -37,7 +37,12 @@ async def map():
     with open("static/map.html", "r") as f:
         return f.read()
 
-@app.websocket("/aggregates")
+@app.get("/aggregates", response_class=HTMLResponse)
+async def aggregates():
+    with open("static/aggregates.html", "r") as f:
+        return f.read()
+
+@app.websocket("/agg")
 async def aggregates_endpoint(websocket: WebSocket):
     await websocket.accept()
     try:

@@ -13,12 +13,19 @@
             padding: 0; 
         }
         .grid-item {
-    background-color: #eeeeee;
-    padding: 10px;
-    margin: 10px;
-    line-height: 0.5;
-    border-radius: 20px;
-}
+            padding: 7px;
+            margin: 3px;
+            border-radius: 5px;
+            background-color: #eeeeee;
+        }
+        .order-count {
+            font-weight: bold;
+            font-size: 1.5em;
+        }
+        .timestamp {
+            font-size: 15px;
+            color: #666666;
+        }
     </style>
 </head>
 <body>
@@ -33,36 +40,38 @@
             const item = document.createElement('div');
             item.id = `grid-item-${i}`;
             item.className = 'grid-item';
-            item.style.width = '100px';
-            item.style.height = `100px`;
+            item.style.width = '190px';
+            item.style.height = `30px`;
             item.innerHTML = `
-                <h3>${i}</h3>
-                <p>??</p>
-                <p>${now.toLocaleTimeString()}</p>
+                    <span class="restaurant-id">Restaurant ${i}</span>
+                    <span class="order-count">?</span>
+                    <span class="timestamp">--:--:--</span>
             `
             grid.appendChild(item);
         }
         var msnry = new Masonry( grid, {
             // options
             itemSelector: '.grid-item',
-            columnWidth: 200,
-            gutter:10
+            columnWidth: 100,
+            gutter:5
             });
 
-        const ws = new WebSocket('ws://localhost:8000/aggregates');
+        const ws = new WebSocket('ws://localhost:8000/agg');
         const table = document.getElementById('data');
         ws.onmessage = function(event) {
             const message = JSON.parse(event.data);
             const itemId = `grid-item-${message.restaurant_id}`;
             const element = document.getElementById(itemId);
+            element.style.backgroundColor = '#43ff7f';
             const date = new Date(message.window_end);
             element.innerHTML = `
-                <h3>${message.restaurant_id}</h3>
-                <p>${message.order_count}</p>
-                <p>${date.toLocaleTimeString()}</p>
+                    <span class="restaurant-id">Restaurant ${message.restaurant_id}</span>
+                    <span class="order-count">${message.order_count}</span>
+                    <span class="timestamp">${date.toLocaleTimeString()}</span>
             `;
-            // element.removeChild(element.firstChild);
-            // console.log('WebSocket message received:', message);
+            setTimeout(() => {
+                element.style.backgroundColor = '#eeeeee';
+            }, 1500);
         };
 
         ws.onclose = function(event) {
