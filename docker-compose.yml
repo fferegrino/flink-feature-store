@@ -113,6 +113,11 @@ services:
     ports:
       - 6379:6379
       - 8001:8001
+    healthcheck:
+      test: redis-cli ping
+      interval: 30s
+      timeout: 10s
+      retries: 5
   workbench:
     build: workbench/.
     env_file:
@@ -122,6 +127,15 @@ services:
         condition: service_completed_successfully
     ports:
       - 8888:8888
+  feature-store-api:
+    build: feature-store-api/.
+    depends_on:
+      setup:
+        condition: service_completed_successfully
+      redis:
+        condition: service_healthy
+    ports:
+      - 8002:8002
   # Flink setup
   # Uncomment to run flink setup automatically
   flink-setup:
