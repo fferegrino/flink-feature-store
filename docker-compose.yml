@@ -113,6 +113,15 @@ services:
     ports:
       - 6379:6379
       - 8001:8001
+  workbench:
+    build: workbench/.
+    env_file:
+      - compose.env
+    depends_on:
+      setup:
+        condition: service_completed_successfully
+    ports:
+      - 8888:8888
   # Flink setup
   # Uncomment to run flink setup automatically
   flink-setup:
