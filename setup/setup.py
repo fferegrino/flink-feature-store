@@ -50,6 +50,8 @@ try:
 
         connection.database = db_name
 
+        cursor.execute("DROP TABLE IF EXISTS restaurant_order_counts")
+
         create_table_query = """
 CREATE TABLE restaurant_order_counts (
   restaurant_id INT,
